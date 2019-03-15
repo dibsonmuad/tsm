@@ -1,48 +1,31 @@
-language: nix
-#nix: 2.0.4
+language: cpp
 
 env:
   global:
-    # Ubuntu version
-    - LINUX_DIST=xenial
-    - DEPS_DIR=${TRAVIS_BUILD_DIR}/deps
+   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "tc6Sn9gBICGFdxpU21oPYj2d967NAP/0urYyZXhYgJw14P7iCaSBgK/TDW6/ylRMgNVJ7VRQscbGH26Fn/AL5gutbFMkn56rb4q9bL530Di02iya2TW6+oWLUcVQEc9XTcsFTWi2TxNxn54z+2s0eI3SpmhFKOdCuCYxHVLKJRUK2uZ4sC2rDGH6+4QUluvl2p0FG51cXHMBgsH2X2IuXOtsc36GO4HWIduNe3eae8PQvLi4FLtivwzcAFM60pUygODDL6vTf4ufzwCgHlbRshNg3S22oZcIT99v0BbJnCbuI+FY3/IXjbcoKinfd/67enOFdf53mn80GgdtJe8r6zO4/1OLJb1/IdEHG9jeRHH4fkjzklxu5mOGWaLN5jxS1EtgyQbc3XT/cUXql4P0gLcf8OylH9rthRuOG+7TV1DSZ2wjed9b2est3UZLnawATnhx/ty5bCWbp0YAckqCJ9Q2tRtW8YBhXN9I51FZTkK9udWu6fMgBNBlpO1KWtMFLVQY03jMkXWycQjpQE89dfX5CUNNwHQ8KhXHm1jJQre4IKPCnG4JW6kJoFrh5zepM2lqZghv7VFpPeeMJa+GY/P34eYKFyaqnkvwqS58VdtzmcyZhqfMS/I+hf7bRlTrcxyyYlMQ1SIFnj4e5LJA90JU7jE0SC05luJ4gKzrD1I="
 
-matrix:
-  include:
-    - os: linux
-      dist: xenial
-      sudo: true
-      addons:
-       apt:
-         packages:
-           # Misc
-           - python-yaml
-         sources:
+addons:
+  coverity_scan:
+    project:
+      name: "tinverse/tsm"
+    build_command_prepend: cmake .
+    build_command: make
+    branch_pattern: coverity_scan
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - gcc-5
+    - g++-5
+    - clang
 
-before_install:
+compiler:
+  - gcc
+  - clang
 
 install:
-    - sudo pip install codecov
-script:
-    ############################################################################
-    # Build main and tests
-    ############################################################################
-    - nix-shell --run ./build.sh
-after_success:
-    # Uploading report to CodeCov
-    - bash <(curl -s https://codecov.io/bash) -f "test/tsm_test.profdata" || echo "Codecov did not collect coverage reports"
+# Use g++5.4 and not 4.6 (C++11 missing)
+  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 
-deploy:
-  provider: pages
-  skip_cleanup: true
-  local_dir: build/docs/html
-  github_token: $GH_REPO_TOKEN
-  verbose: true
-  on:
-    branch: master
-    condition: -d "build/docs/html"
-
-after_failure:
-  # show actions of the OOM killer
-  - echo pwd
-  - sudo dmesg
