@@ -13,8 +13,6 @@ addons:
     build_command_prepend: cmake .
     build_command: make
     branch_pattern: coverity_scan
-  script:
-    - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 
   apt:
     sources:
@@ -26,6 +24,8 @@ addons:
 compiler:
   - gcc
   - clang
+
+before_install: echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
 install:
 # Use g++5.4 and not 4.6 (C++11 missing)
