@@ -26,7 +26,6 @@ compiler:
   - clang
 
 before_install: 
-  - gem update --system
   - echo -n | openssl s_client -CApath /etc/ssl/certs/ -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
 install:
