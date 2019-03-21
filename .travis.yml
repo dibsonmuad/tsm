@@ -15,10 +15,10 @@ addons:
     - ca-certificates
     - gcc-5
     - g++-5
-
   coverity_scan:
     project:
       name: "tinverse/tsm"
+    notification_email: sriram@tinverse.com
     build_command_prepend: "cmake ."
     build_command: "make"
     branch_pattern: coverity_scan
@@ -34,4 +34,4 @@ install:
 # Use g++5.4 and not 4.6 (C++11 missing)
   - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 
-script: if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make ; fi
+script: make
