@@ -19,8 +19,8 @@ addons:
     project:
       name: "tinverse/tsm"
     notification_email: sriram@tinverse.com
-    build_command_prepend: "cmake ."
-    build_command: "make"
+    build_command_prepend: cmake .
+    build_command: make
     branch_pattern: coverity_scan
 
 
