@@ -1,18 +1,13 @@
 language: cpp
+dist: trusty
 
 env:
   global:
    # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
    #   via the "travis encrypt" command using the project repo's public key
-   - secure: "tc6Sn9gBICGFdxpU21oPYj2d967NAP/0urYyZXhYgJw14P7iCaSBgK/TDW6/ylRMgNVJ7VRQscbGH26Fn/AL5gutbFMkn56rb4q9bL530Di02iya2TW6+oWLUcVQEc9XTcsFTWi2TxNxn54z+2s0eI3SpmhFKOdCuCYxHVLKJRUK2uZ4sC2rDGH6+4QUluvl2p0FG51cXHMBgsH2X2IuXOtsc36GO4HWIduNe3eae8PQvLi4FLtivwzcAFM60pUygODDL6vTf4ufzwCgHlbRshNg3S22oZcIT99v0BbJnCbuI+FY3/IXjbcoKinfd/67enOFdf53mn80GgdtJe8r6zO4/1OLJb1/IdEHG9jeRHH4fkjzklxu5mOGWaLN5jxS1EtgyQbc3XT/cUXql4P0gLcf8OylH9rthRuOG+7TV1DSZ2wjed9b2est3UZLnawATnhx/ty5bCWbp0YAckqCJ9Q2tRtW8YBhXN9I51FZTkK9udWu6fMgBNBlpO1KWtMFLVQY03jMkXWycQjpQE89dfX5CUNNwHQ8KhXHm1jJQre4IKPCnG4JW6kJoFrh5zepM2lqZghv7VFpPeeMJa+GY/P34eYKFyaqnkvwqS58VdtzmcyZhqfMS/I+hf7bRlTrcxyyYlMQ1SIFnj4e5LJA90JU7jE0SC05luJ4gKzrD1I="
-addons:
-  coverity_scan:
-    project:
-      name: "tinverse/tsm"
-    build_command_prepend: cmake .
-    build_command: make
-    branch_pattern: coverity_scan
+   # secure: "tc6Sn9gBICGFdxpU21oPYj2d967NAP/0urYyZXhYgJw14P7iCaSBgK/TDW6/ylRMgNVJ7VRQscbGH26Fn/AL5gutbFMkn56rb4q9bL530Di02iya2TW6+oWLUcVQEc9XTcsFTWi2TxNxn54z+2s0eI3SpmhFKOdCuCYxHVLKJRUK2uZ4sC2rDGH6+4QUluvl2p0FG51cXHMBgsH2X2IuXOtsc36GO4HWIduNe3eae8PQvLi4FLtivwzcAFM60pUygODDL6vTf4ufzwCgHlbRshNg3S22oZcIT99v0BbJnCbuI+FY3/IXjbcoKinfd/67enOFdf53mn80GgdtJe8r6zO4/1OLJb1/IdEHG9jeRHH4fkjzklxu5mOGWaLN5jxS1EtgyQbc3XT/cUXql4P0gLcf8OylH9rthRuOG+7TV1DSZ2wjed9b2est3UZLnawATnhx/ty5bCWbp0YAckqCJ9Q2tRtW8YBhXN9I51FZTkK9udWu6fMgBNBlpO1KWtMFLVQY03jMkXWycQjpQE89dfX5CUNNwHQ8KhXHm1jJQre4IKPCnG4JW6kJoFrh5zepM2lqZghv7VFpPeeMJa+GY/P34eYKFyaqnkvwqS58VdtzmcyZhqfMS/I+hf7bRlTrcxyyYlMQ1SIFnj4e5LJA90JU7jE0SC05luJ4gKzrD1I="
 
+addons:
   apt:
     sources:
     - ubuntu-toolchain-r-test
@@ -20,10 +15,17 @@ addons:
     - ca-certificates
     - gcc-5
     - g++-5
-    - clang
+
+  coverity_scan:
+    project:
+      name: "tinverse/tsm"
+    build_command_prepend: "cmake ."
+    build_command: "make"
+    branch_pattern: coverity_scan
+
+
 compiler:
   - gcc
-  - clang
 
 before_install: 
   - echo -n | openssl s_client -CApath /etc/ssl/certs/ -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
@@ -32,3 +34,4 @@ install:
 # Use g++5.4 and not 4.6 (C++11 missing)
   - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 
+script: if [ "${COVERITY_SCAN_BRANCH}" != 1 ]; then make ; fi
