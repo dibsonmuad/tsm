@@ -1,12 +1,9 @@
 language: cpp
 dist: xenial
-
 env:
   global:
-   # The next declaration is the encrypted COVERITY_SCAN_TOKEN, created
-   #   via the "travis encrypt" command using the project repo's public key
-   - secure: "F0Fm5SEMbd0VRnZYpKhIYCzn18r3toxeGvrVAr+LHUHc/IPDgpI8WbFE3POYxsHbBFbJmUiFPAv71v7hX1RmHdhUieFY3/fU6kxTTE+lYxofJGCmStMSHmwKNXrby5eW45PuWLHTyiBNijDzDhJIw4bJt4ruP0Eb6aeSvZf9CRNvw495FfmTIxq8z0U5XA2miFlNIqJgXxF8FUg/7++Z/bC1clgNvVmaO8+xNNqAs1OB70n1F5Z8iHpmNKhYKtA3EITFxRQYxYL83ALktllKOA40rO9hEl+yZYbWGz+/bY3uHNzdG5WvizrAEQFQyceEYn0RLkgodGUzqaBr6/jBBKaEgcunPaiNp7apdqpSktz0AbAOsiGaL5E0nV1XcZ2qTSyxl2WbA7mS1bF8fbMXiNvihLUEnL3fjFFOpvA9Z/hqbnhmwx7sBXOO2mBeEnX49RfRhuurvk1Xb4JxaUT4aXLq4pMZJpviUitVtNk//myoWsGW0NCQBZTEMeiS9RtXasq9v+sBz7aT3cNOtUq2tv+dC0MhjN3MHE9B9OdKER52gVNZG6ECSNNDMZ/+LKHi+3Xn7FEp821e6/6t/LxVT39lLZmgwTPgutKIMZgkhC5qde1FvjIOOL1+m8HeIuD94yxnxNTcmRQbfBagrnyjBl+fONOBP67K9VcNNBBf5Rw="
-
+  - secure: F0Fm5SEMbd0VRnZYpKhIYCzn18r3toxeGvrVAr+LHUHc/IPDgpI8WbFE3POYxsHbBFbJmUiFPAv71v7hX1RmHdhUieFY3/fU6kxTTE+lYxofJGCmStMSHmwKNXrby5eW45PuWLHTyiBNijDzDhJIw4bJt4ruP0Eb6aeSvZf9CRNvw495FfmTIxq8z0U5XA2miFlNIqJgXxF8FUg/7++Z/bC1clgNvVmaO8+xNNqAs1OB70n1F5Z8iHpmNKhYKtA3EITFxRQYxYL83ALktllKOA40rO9hEl+yZYbWGz+/bY3uHNzdG5WvizrAEQFQyceEYn0RLkgodGUzqaBr6/jBBKaEgcunPaiNp7apdqpSktz0AbAOsiGaL5E0nV1XcZ2qTSyxl2WbA7mS1bF8fbMXiNvihLUEnL3fjFFOpvA9Z/hqbnhmwx7sBXOO2mBeEnX49RfRhuurvk1Xb4JxaUT4aXLq4pMZJpviUitVtNk//myoWsGW0NCQBZTEMeiS9RtXasq9v+sBz7aT3cNOtUq2tv+dC0MhjN3MHE9B9OdKER52gVNZG6ECSNNDMZ/+LKHi+3Xn7FEp821e6/6t/LxVT39lLZmgwTPgutKIMZgkhC5qde1FvjIOOL1+m8HeIuD94yxnxNTcmRQbfBagrnyjBl+fONOBP67K9VcNNBBf5Rw=
+  - secure: k0iukUs1I6TJybEwHMyziwxh/8oqspLHiN+K3P810cq+sCqZNUEPBgTDWbPa30IcTWyZzy1q/iixo+bPt//QB6clblzOY97blRYd+M4pn6YPjt/Ip8jKXHWBdbR1K1GpltgMS1hRMacRy/Ck5r5yf01CslPzPqYfFBQa1sOiXGMd736MgGq9evKEeRYu1j1D4nLZiCFOQzRpfl/JrrFjuYGSbOZMQCsWqJAHvpYyRcxq+i6iduWVOptChmbcvC8ZFaar7IWK1nkcCFCEicf4cWTRBBjOeex62h6ePVdmIljEtGBjO8JQcpdH0RREsRGueuCrXPe++bEF56/hSsR2VjAxaxYsKIjQiTDhmuyvdIGJOCkJTMDkxEqPg80G4eQD+8gFV09ctelfDU69OSe8N6qfGL91PCS72K861Crpy3/NC480wvuFO6uzXjlfUbDoSar4Hx2XOPocdBlXZuM+wwKe3NYZM7EZAs81yei2LB0KneYDJ2W2SvM9XEfmiRJ4blKU1TRfMx+Mvfrmc7bgUVAYu14qYoia+L4zPFnOh/+O2y7bF+GCD+E4XBIo4KLmO2CdpC2bM0pG2ilwkXA3/GyXb78MdnXPYpIPTYWX2PlMhaW6P0neiJqKfLkslB6tg3O0y5Mhf+ymxSvVRiowQYDZ0MLBo6QlCWrX3EW74CM=
 addons:
   apt:
     sources:
@@ -17,17 +14,13 @@ addons:
     - g++
   coverity_scan:
     project:
-      name: "tinverse/tsm"
+      name: tinverse/tsm
     notification_email: sriram@tinverse.com
-    build_command_prepend: "cmake ."
-    build_command: "make"
+    build_command_prepend: cmake .
+    build_command: make
     branch_pattern: coverity_scan
-
-
 compiler:
-  - gcc
-
-before_install: 
-  - echo -n | openssl s_client -CApath /etc/ssl/certs/ -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
-
-
+- gcc
+before_install:
+- echo -n | openssl s_client -CApath /etc/ssl/certs/ -connect scan.coverity.com:443
+  | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
