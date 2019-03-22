@@ -1,5 +1,5 @@
 language: cpp
-dist: trusty
+dist: xenial
 
 env:
   global:
@@ -13,8 +13,8 @@ addons:
     - ubuntu-toolchain-r-test
     packages:
     - ca-certificates
-    - gcc-5
-    - g++-5
+    - gcc
+    - g++
   coverity_scan:
     project:
       name: "tinverse/tsm"
@@ -30,7 +30,4 @@ compiler:
 before_install: 
   - echo -n | openssl s_client -CApath /etc/ssl/certs/ -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-certificates.crt
 
-install:
-# Use g++5.4 and not 4.6 (C++11 missing)
-  - if [ "$CXX" = "g++" ]; then export CXX="g++-5" CC="gcc-5"; fi
 
