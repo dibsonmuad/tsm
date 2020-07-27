@@ -55,24 +55,3 @@ template<typename FsmDef>
 using AsynchronousFsm = AsyncExecutionPolicy<FsmExecutor<FsmDef>>;
 
 } // namespace tsm
-
-// Provide a hash function for StateEventPair
-namespace std {
-using tsm::State;
-template<>
-struct hash<tsm::StateEventPair>
-{
-    size_t operator()(const tsm::StateEventPair& s) const
-    {
-        State* statePtr = &s.first;
-        uint64_t id_s = statePtr->id;
-        tsm::Event event = s.second;
-        auto address = reinterpret_cast<uintptr_t>(statePtr);
-        uint64_t id_e = event.id;
-        size_t hash_value = hash<uint64_t>{}(id_s) ^
-                            hash<uintptr_t>{}(address) ^
-                            (hash<uint64_t>{}(id_e) << 1);
-        return hash_value;
-    }
-};
-} // namespace std
