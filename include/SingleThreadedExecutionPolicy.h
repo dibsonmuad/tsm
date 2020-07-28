@@ -20,6 +20,10 @@ struct SingleThreadedExecutionPolicy : public StateType
       , interrupt_(false)
     {}
 
+    SingleThreadedExecutionPolicy(SingleThreadedExecutionPolicy const&) =
+      delete;
+    SingleThreadedExecutionPolicy(SingleThreadedExecutionPolicy&&) = delete;
+
     virtual ~SingleThreadedExecutionPolicy() = default;
 
     void onExit(Event const& e) override

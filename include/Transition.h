@@ -30,15 +30,15 @@ struct StateTransitionTableT
 
         virtual ~Transition() = default;
 
-        template<typename HsmType>
-        void doTransition(HsmType* hsm)
+        void doTransition(FsmDef* hsm)
         {
             if (!hsm) {
                 // throw NullPointerException;
             }
 
             // Evaluate guard if it exists
-            bool result = guard && CALL_MEMBER_FN(hsm, guard);
+            bool result =
+              guard && CALL_MEMBER_FN(hsm, guard);
 
             if (!guard || result) {
                 // Perform entry and exit actions in the doTransition function.

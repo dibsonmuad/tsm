@@ -19,6 +19,12 @@ add_executable(${TEST_PROJECT}
   OrthogonalCdPlayerHsm.cpp
 )
 
+if(MSVC)
+    target_compile_options(${TEST_PROJECT} PRIVATE /W4 /WX)
+else(MSVC)
+    target_compile_options(${TEST_PROJECT} PRIVATE -Wall -Wextra -pedantic -Werror)
+endif(MSVC)
+
 target_link_libraries(${TEST_PROJECT}
   PRIVATE Catch2::Catch2 Threads::Threads tsm::tsm)
 

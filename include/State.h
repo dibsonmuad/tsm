@@ -9,16 +9,23 @@
 
 namespace tsm {
 
+struct IState
+{
+    virtual void execute(Event const&) = 0;
+    virtual void onEntry(Event const&) = 0;
+    virtual void onExit(Event const&) = 0;
+};
+
 ///
 /// All HsmDefinition types inherit from State. This is the base class for all
 /// StateMachines.
 ///
-struct State
+struct State : public IState
 {
   public:
     State() = delete;
 
-    State(std::string const& stateName)
+    explicit State(std::string const& stateName)
       : name(stateName)
       , id(tsm::counter_inc())
     {}
@@ -29,9 +36,8 @@ struct State
     bool operator==(State const& rhs) { return this->id == rhs.id; }
     bool operator!=(State& rhs) { return !(*this == rhs); }
 
-    virtual void execute(Event const& nextEvent)
+    virtual void execute(Event const&)
     {
-
         DLOG(INFO) << "Executing: " << this->name << std::endl;
     }
 
